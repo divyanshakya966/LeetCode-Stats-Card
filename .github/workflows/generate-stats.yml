@@ -1,0 +1,65 @@
+name: Generate LeetCode Stats
+
+on:
+  schedule:
+    # Runs every day at 12:00 UTC (adjust to your preferred time)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Allow manual triggering
+  
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Generate LeetCode Stats SVG
+        id: generate_stats
+        run: |
+          # Create output directory
+          mkdir -p ./stats-output
+          
+          # Save the stats SVG (replace YOUR_USERNAME with actual LeetCode username)
+          curl -o ./stats-output/leetcode-stats.svg \
+            "https://leetcard.jacoblin.cool/divyanshakya966?theme=transparent&extension=activity&cache=0"
+          
+          # Verify the file was created
+          if [ -f ./stats-output/leetcode-stats.svg ]; then
+            echo "✅ Stats SVG generated successfully"
+          else
+            echo "❌ Failed to generate stats SVG"
+            exit 1
+          fi
+      
+      - name: Update README
+        run: |
+          # Create or update README.md with the stats image
+          # This example shows how to add/update the stats in your README
+          
+          if ! grep -q "LeetCode Stats" README.md; then
+            # Add stats section if it doesn't exist
+            cat >> README.md << 'EOF'
+          
+          ## 📊 LeetCode Statistics
+          
+          ![LeetCode Stats](./stats-output/leetcode-stats.svg)
+          
+          EOF
+          fi
+      
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          git add ./stats-output/leetcode-stats.svg README.md
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Update LeetCode stats [skip ci]"
+            git push origin main
+          fi

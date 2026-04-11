@@ -1,0 +1,58 @@
+name: Generate LeetCode Stats (Self-Hosted)
+
+on:
+  schedule:
+    # Runs every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  
+jobs:
+  generate-stats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Generate Stats for Multiple Usernames
+        run: |
+          # Create output directory
+          mkdir -p ./stats-output
+          
+          # Array of usernames to generate stats for
+          usernames=("YOUR_USERNAME1" "YOUR_USERNAME2")
+          
+          for username in "${usernames[@]}"; do
+            echo "Generating stats for: $username"
+            
+            # Replace YOUR_WORKER_URL with your actual Cloudflare Worker URL
+            # Example: https://leetcard.your-domain.com or your Cloudflare Worker custom domain
+            curl -o "./stats-output/leetcode-${username}.svg" \
+              "https://leetcard.jacoblin.cool/${username}?theme=transparent&extension=activity&cache=0" \
+              --max-time 10
+            
+            if [ -f "./stats-output/leetcode-${username}.svg" ]; then
+              echo "✅ Stats generated for $username"
+            else
+              echo "⚠️ Failed to generate stats for $username"
+            fi
+          done
+      
+      - name: Commit and Push Changes
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Add all generated SVGs
+          git add ./stats-output/
+          
+          # Only commit if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "📊 Update LeetCode statistics [skip ci]" || echo "No changes to commit"
+            git push origin main || echo "Failed to push - no changes or branch protection"
+          else
+            echo "No changes detected"
+          fi
