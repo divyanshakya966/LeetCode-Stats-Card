@@ -6,9 +6,6 @@ compatibility_flags = ["nodejs_compat"]
 
 workers_dev = true
 
-[limits]
-cpu_ms = 50
-
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs

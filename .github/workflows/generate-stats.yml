@@ -22,9 +22,9 @@ jobs:
           # Create output directory
           mkdir -p ./stats-output
           
-          # Save the stats SVG (replace YOUR_USERNAME with actual LeetCode username)
+          # Save the stats SVG using your custom Cloudflare Worker
           curl -o ./stats-output/leetcode-stats.svg \
-            "https://leetcard.jacoblin.cool/divyanshakya966?theme=transparent&extension=activity&cache=0"
+            "https://leetcode.leetcode-stats.workers.dev/divyanshakya966?theme=transparent&extension=activity&cache=0"
           
           # Verify the file was created
           if [ -f ./stats-output/leetcode-stats.svg ]; then
