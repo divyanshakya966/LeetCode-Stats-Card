@@ -2,75 +2,97 @@ import { Theme } from "./_theme";
 
 export default Theme({
     palette: {
-        // Fully transparent background that works with both light and dark GitHub mode
+        // Fully transparent background for both modes
         bg: ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"],
-        // High contrast text colors that work in both light and dark modes
+        // GitHub-native text colors: dark for light mode, light for dark mode
         text: ["#0d1117", "#e6edf3"],
-        // Color palette: Green (Easy), Yellow (Medium), Red (Hard), Blue (Accent)
+        // GitHub colors: Green (Easy), Yellow (Medium), Red (Hard), Blue (Accent)
         color: ["#3fb950", "#ffd33d", "#f85149", "#1f6feb"],
     },
     css: `
-        /* Overall styling */
+        /* Global SVG styling */
         svg {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
         
-        /* Titles and headers */
-        #username {
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        #ranking {
-            font-weight: 500;
+        /* Title styling */
+        text {
             font-size: 14px;
-            opacity: 0.8;
+            font-weight: 400;
         }
         
-        /* Difficulty level labels - make them more prominent */
-        #easy-solved-type, #medium-solved-type, #hard-solved-type {
+        /* Username - bold and larger */
+        #username {
+            font-size: 18px;
             font-weight: 600;
-            font-size: 13px;
+            letter-spacing: 0.3px;
         }
         
-        /* Count numbers - make them bold and prominent */
+        /* Ranking number - accent color */
+        #ranking {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.75;
+        }
+        
+        /* Difficulty labels - bold and clear */
+        #easy-solved-type, #medium-solved-type, #hard-solved-type {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+        
+        /* Problem counts - bold for emphasis */
         #easy-solved-count, #medium-solved-count, #hard-solved-count {
-            font-weight: 700;
             font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0px;
         }
         
-        /* Progress bars styling */
+        /* Background rectangles for progress bars - light fill */
         #easy-solved-bg, #medium-solved-bg, #hard-solved-bg {
-            opacity: 0.15;
-            rx: 3;
-            ry: 3;
+            fill-opacity: 0.2;
         }
         
+        /* Progress bar rectangles - solid fill */
         #easy-solved-progress, #medium-solved-progress, #hard-solved-progress {
-            rx: 3;
-            ry: 3;
-            opacity: 1;
+            fill-opacity: 1;
         }
         
-        /* Section titles */
-        text[text-anchor="middle"] {
-            letter-spacing: 0.5px;
-        }
-        
-        /* Total solved ring styling */
+        /* Total solved ring - thicker stroke */
         #total-solved-ring {
-            stroke-width: 3;
-            opacity: 0.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
         
-        /* Icon styling */
+        /* Icon */
         #icon {
             opacity: 1;
         }
         
-        /* Adjust line heights for better readability */
-        tspan {
+        /* Section headers */
+        #icon-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+        
+        /* Activity section title */
+        text[y="310"] {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.75;
+        }
+        
+        /* All text base styling for consistency */
+        text tspan {
             dominant-baseline: middle;
+            text-anchor: inherit;
+        }
+        
+        /* Line styling */
+        line {
+            stroke-opacity: 0.2;
         }
     `,
 });
